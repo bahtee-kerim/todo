@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import Context from './../Context';
 
 const TodoItem = ({ todo, index, onChange }) => {
+
+  const { removeTodo } = useContext(Context);
   
   const classes = [];
 
@@ -20,7 +23,8 @@ const TodoItem = ({ todo, index, onChange }) => {
       marginBottom: '.5rem'
     },
     input: {
-      marginRight: '1rem'
+      marginRight: '1rem',
+      cursor: 'pointer'
     }
   }
 
@@ -36,7 +40,7 @@ const TodoItem = ({ todo, index, onChange }) => {
         &nbsp;
         { todo.title }
       </span>
-      <button className="btnClose"> &times; </button>
+      <button className="btnClose" onClick={() => removeTodo(todo.id)}> &times; </button>
     </li>
   )
 }
