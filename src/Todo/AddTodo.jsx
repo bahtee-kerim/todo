@@ -1,22 +1,37 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+const useInputValue = (defaultInput = '') => {
+
+  const [value, setValue] = useState(defaultInput);
+
+  return {
+    bind: {
+      value,
+      onChange: even => setValue(even.target.value)
+    },
+    clear: () => setValue(''),
+    value: () => value
+  }
+}
+
 const AddTodo = ({ onCreate }) => {
 
-  const [value, setValue] = useState('');
+  const input = useInputValue('')
 
   const submitHandler = (event) => {
+
     event.preventDefault();
 
-    if(value.trim()) {
-      onCreate(value);
-      setValue('');
+    if(input.value().trim()) {
+      onCreate(input.value());
+      input.clear('');
     }
   }
 
   return (
     <form style={{marginBottom: '1rem'}} onSubmit={submitHandler}>
-      <input type="text" value={value} onChange={(even) => setValue(even.target.value)} />
+      <input type="text" {...input.bind} />
       <button type="submit">Add todo</button>
     </form>
   )
